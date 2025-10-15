@@ -20,9 +20,14 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             authorization-grant-type: authorization_code
             client-name: Amazon Cognito
+            provider: cognito
         provider:
           cognito:
-            issuer-uri: ${COGNITO_ISSUER_URI:https://cognito-idp.ap-northeast-1.amazonaws.com/your_user_pool_id}
+            authorization-uri: ${COGNITO_AUTHORIZATION_URI:${COGNITO_DOMAIN:https://your-domain.auth.ap-northeast-1.amazoncognito.com}/oauth2/authorize}
+            token-uri: ${COGNITO_TOKEN_URI:${COGNITO_DOMAIN:https://your-domain.auth.ap-northeast-1.amazoncognito.com}/oauth2/token}
+            user-info-uri: ${COGNITO_USER_INFO_URI:${COGNITO_DOMAIN:https://your-domain.auth.ap-northeast-1.amazoncognito.com}/oauth2/userInfo}
+            jwk-set-uri: ${COGNITO_JWK_SET_URI:https://cognito-idp.ap-northeast-1.amazonaws.com/${COGNITO_USER_POOL_ID:your_user_pool_id}/.well-known/jwks.json}
+            user-name-attribute: sub
 
 app:
   aws:

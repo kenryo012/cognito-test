@@ -20,16 +20,18 @@ Amazon Cognito を OIDC の認可コードフローで利用し、Spring Boot �
 
 ## 設定
 
-環境変数または `application.yml` を編集し、以下の値を設定します。
+環境変数または `application.yml` を編集し、以下の値を設定します（値をセットしない場合はプレースホルダのままでもアプリは起動しますが、実際のログイン処理は行えません）。
 
 ```bash
 export COGNITO_CLIENT_ID=xxxxxxxxxxxxxxxxxxxx
 export COGNITO_CLIENT_SECRET=yyyyyyyyyyyyyyyyyyyy
-export COGNITO_ISSUER_URI=https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_XXXXXXXXX
-export AWS_REGION=ap-northeast-1
+export COGNITO_USER_POOL_ID=ap-northeast-1_XXXXXXXXX
+export COGNITO_DOMAIN=https://your-domain.auth.ap-northeast-1.amazoncognito.com
+export AWS_REGION=ap-northeast-1  # AWS SDK を利用するリージョン
 ```
 
-> `COGNITO_ISSUER_URI` は User Pool ID を用いた Issuer URL（`https://cognito-idp.{region}.amazonaws.com/{userPoolId}`）を指定します。User Pool ドメインの `/oauth2/token` エンドポイントは Spring が自動解決します。
+- それぞれの URI を個別に上書きしたい場合は `COGNITO_AUTHORIZATION_URI` / `COGNITO_TOKEN_URI` / `COGNITO_USER_INFO_URI` / `COGNITO_JWK_SET_URI` を指定してください。
+- User Pool ID から自動生成される JWK 取得 URL は `https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json` です。
 
 ## 実行方法
 
@@ -69,4 +71,5 @@ mvn test
 
 - AWS SDK は環境変数や `~/.aws/credentials` など標準の認証情報プロバイダーチェーンを利用します。`GetUser` API のみを呼び出すため、通常は追加の IAM 権限は不要ですが、必要に応じて `cognito-idp:GetUser` を許可してください。
 - ローカルで moto を利用する場合は `COGNITO_ENDPOINT_OVERRIDE` でエンドポイントを上書きしてください。
+- Cognito ドメインやクライアント ID/シークレットを未設定の状態でもアプリは起動できますが、その場合ログインリンクは利用できません。
 - プロダクションで利用する際は HTTPS・セッション管理・CSRF 等のセキュリティ強化を検討してください。
