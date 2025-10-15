@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognito User Attributes</title>
+</head>
+<body>
+<h1>Amazon Cognitoユーザ属性</h1>
+
+<section th:if="${!authenticated}">
+    <p>先にサインインしてください。</p>
+    <a th:href="@{/oauth2/authorization/cognito}">ログインページへ</a>
+</section>
+
+<section th:if="${authenticated}">
+    <p>AWS SDK for Java (v2) を使って GetUser API から取得した属性です。</p>
+    <table border="1" cellpadding="5">
+        <thead>
+        <tr>
+            <th>名前</th>
+            <th>値</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${attributes}">
+            <td th:text="${entry.key}">attribute-name</td>
+            <td th:text="${entry.value}">attribute-value</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a th:href="@{/}">トップに戻る</a></p>
+</section>
+</body>
+</html>

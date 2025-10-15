@@ -1,0 +1,14 @@
+# Maven / Spring Boot build artifacts
+/target/
+
+# IDE metadata
+.idea/
+.classpath
+.project
+.settings/
+
+# OS metadata
+.DS_Store
+
+# Logs
+*.log

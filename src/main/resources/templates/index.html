@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognito OIDC Demo</title>
+</head>
+<body>
+<h1>Amazon Cognito OIDC Authorization Code Flow</h1>
+
+<section th:if="${oidcUser == null}">
+    <p>まだサインインしていません。Amazon Cognitoでログインしてください。</p>
+    <a th:href="@{/oauth2/authorization/cognito}">サインイン</a>
+</section>
+
+<section th:if="${oidcUser != null}">
+    <p>
+        ようこそ、
+        <span th:text="${oidcUser.fullName != null ? oidcUser.fullName : oidcUser.preferredUsername}">ユーザ</span>
+    </p>
+    <p th:if="${oidcUser.email != null}">メールアドレス: <span th:text="${oidcUser.email}">example@example.com</span></p>
+    <p><a th:href="@{/me}">AWS SDK経由で取得したユーザ属性を見る</a></p>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">ログアウト</button>
+    </form>
+</section>
+</body>
+</html>

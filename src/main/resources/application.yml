@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: cognito-oidc-app
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito:
+            client-id: ${COGNITO_CLIENT_ID:change-me}
+            client-secret: ${COGNITO_CLIENT_SECRET:change-me}
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-name: Amazon Cognito
+        provider:
+          cognito:
+            issuer-uri: ${COGNITO_ISSUER_URI:https://cognito-idp.ap-northeast-1.amazonaws.com/your_user_pool_id}
+
+app:
+  aws:
+    region: ${AWS_REGION:ap-northeast-1}
+    cognito-endpoint: ${COGNITO_ENDPOINT_OVERRIDE:}
